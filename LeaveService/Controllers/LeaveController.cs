@@ -22,7 +22,7 @@ namespace LeaveService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllLeaves()
         {
-            var leaves = await _context.LeaveRequests.ToListAsync();
+            var leaves = await  _context.LeaveRequests.ToListAsync();
             return Ok(leaves);
         }
 
