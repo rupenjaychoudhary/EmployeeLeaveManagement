@@ -8,5 +8,11 @@ namespace LeaveService.Data
         public LeaveDbContext(DbContextOptions<LeaveDbContext> options) : base(options) { }
 
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
+        public DbSet<EmployeeLeaveBalance> LeaveBalances { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
