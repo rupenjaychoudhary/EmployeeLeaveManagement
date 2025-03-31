@@ -1,4 +1,6 @@
 using LeaveService.Data;
+using LeaveService.Interface;
+using LeaveService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -25,13 +27,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],  // Ensure same issuer as UserService
-            ValidAudience = builder.Configuration["Jwt:Audience"],  // Ensure same audience as UserService
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],  // ? Must match UserService
+            ValidAudience = builder.Configuration["Jwt:Audience"],  // ? Must match UserService
             IssuerSigningKey = new SymmetricSecurityKey(key)
         };
     });
-
-// Add Authorization
 
 builder.Services.AddAuthorization();
 
@@ -50,7 +50,7 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Enter JWT token in the format: Bearer {your_token}",
         Name = "Authorization",
         In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
+        Type = SecuritySchemeType.ApiKey,  // ? Changed from Http to ApiKey
         Scheme = "Bearer"
     });
 
@@ -69,6 +69,8 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+builder.Services.AddScoped<ILeaveService, LeaveService.Services.LeaveService>();
+builder.Services.AddScoped<ILeaveBalanceService, LeaveBalanceService>();
 
 // Build Application
 var app = builder.Build();
